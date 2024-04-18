@@ -1,0 +1,40 @@
+version: "3.9"
+services:
+  node-app:
+    image: node:alpine
+    container_name: node-app
+    ports:
+      - 80:80
+    volumes:
+      - ./node:/usr/src/app
+    working_dir: /usr/src/app
+    command: node server.js
+    depends_on:
+      - go-app
+    networks:
+      - compose-brigde
+  go-app:
+    image: golang:alpine
+    container_name: go-app
+    ports:
+      - 3333:3333
+    volumes:
+      - ./go:/usr/src/app
+    working_dir: /usr/src/app
+    command: go run main.go
+    depends_on:
+      - postgres-db
+    networks:
+      - compose-brigde
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      - POSTGRES_PASSWORD=123
+    ports:
+      - 5432:5432
+    networks:
+      - compose-brigde
+networks:
+  compose-brigde:
+    driver: bridge
