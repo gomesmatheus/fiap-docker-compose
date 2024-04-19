@@ -27,7 +27,7 @@ services:
     networks:
       - compose-brigde
   postgres-db:
-    image: postgres:latest
+    image: postgres:alpine3.19
     container_name: postgres-db
     environment:
       - POSTGRES_PASSWORD=123
